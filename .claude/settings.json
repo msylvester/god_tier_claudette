@@ -1,27 +1,23 @@
 {
-  "hooks": {
-    "postToolUse": ".claude/hooks/post-tool-use.sh"
-  },
   "permissions": {
     "allow": [
-      "git",
-      "node",
-      "npm",
-      "npx",
-      "bun",
-      "bunx",
-      "docker",
-      "docker-compose",
-      "ls",
-      "cat",
-      "sed",
-      "awk",
-      "grep",
-      "prettier",
-      "eslint",
-      "bash",
-      "sh"
+      "Git",
+      "Node",
+      "Npm",
+      "Npx",
+      "Bun",
+      "Bunx",
+      "Docker",
+      "Docker-compose",
+      "Ls",
+      "Cat",
+      "Sed",
+      "Awk",
+      "Grep",
+      "Prettier",
+      "Eslint",
+      "Bash",
+      "Sh"
     ]
   }
 }
-
