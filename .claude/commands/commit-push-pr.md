@@ -13,36 +13,43 @@ description: Create commit, push to remote, and create a pull request
 **Branch exists on remote:** `{{bash: git ls-remote --heads origin $(git branch --show-current) 2>/dev/null | grep -q . && echo "Yes" || echo "No"}}`
 
 **Git Status:**
+
 ```
 {{bash: git status --short}}
 ```
 
 **Staged Changes:**
+
 ```
 {{bash: git diff --cached --stat}}
 ```
 
 **Unstaged Changes:**
+
 ```
 {{bash: git diff --stat}}
 ```
 
 **Recent Commits (for message style):**
+
 ```
 {{bash: git log -5 --oneline --pretty=format:"%h %s"}}
 ```
 
 **Detailed Diff of Staged Changes:**
+
 ```diff
 {{bash: git diff --cached}}
 ```
 
 **Detailed Diff of Unstaged Changes:**
+
 ```diff
 {{bash: git diff}}
 ```
 
 **All Untracked Files:**
+
 ```
 {{bash: git ls-files --others --exclude-standard}}
 ```
@@ -69,6 +76,7 @@ Using the git context above:
    - Use the default base branch (main/master)
 
 **Important:**
+
 - DO NOT commit files with secrets (.env, credentials.json, etc.)
 - Before running git commands, show me what you plan to do
 - Follow the git safety protocol (no force push, no --no-verify, etc.)

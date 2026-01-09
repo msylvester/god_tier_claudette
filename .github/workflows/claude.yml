@@ -21,4 +21,3 @@ jobs:
           prompt: |
             Update CLAUDE.md only based on the PR comment.
             Do not touch any other files.
-
