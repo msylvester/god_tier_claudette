@@ -16,7 +16,7 @@ export class Item {
 
   update(speed: number): void {
     if (this.collected) return;
-    this.x += speed;
+    this.x -= speed; // Move from right to left
   }
 
   draw(ctx: CanvasRenderingContext2D): void {

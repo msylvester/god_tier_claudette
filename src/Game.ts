@@ -38,15 +38,15 @@ export class Game {
     this.spawnItemColumn();
   }
 
-  // Spawn a vertical column of items (one per lane) at the left side
+  // Spawn a vertical column of items (one per lane) at the right side
   private spawnItemColumn(): void {
     if (!this.environment) return;
 
     const bounds = this.environment.getBounds(this.canvas.width, this.canvas.height);
     const laneInfo = this.environment.getLaneInfo(this.canvas.width, this.canvas.height);
 
-    // Start items at the left edge of the arena
-    const startX = bounds.left;
+    // Start items at the right edge of the arena
+    const startX = bounds.right;
 
     // Create one item per lane, forming a vertical column
     for (let laneIndex = 0; laneIndex < laneInfo.laneCount; laneIndex++) {
@@ -84,9 +84,9 @@ export class Game {
       // Check collision with items
       this.checkItemCollisions();
 
-      // Check if all items have gone off screen or been collected - respawn column
+      // Check if all items have gone off screen (left side) or been collected - respawn column
       const allOffScreenOrCollected = this.items.every(
-        (item) => item.collected || item.x > bounds.right + item.width
+        (item) => item.collected || item.x < bounds.left - item.width
       );
       if (allOffScreenOrCollected) {
         this.items = [];
