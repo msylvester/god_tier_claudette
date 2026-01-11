@@ -16,6 +16,7 @@ bun run test:file -- "glob"            # Specific files
 bun run lint:file -- "file1.ts"        # Specific files
 bun run lint                           # All files
 
+
 # 5. Before creating PR
 bun run lint:claude && bun run test
 ```
