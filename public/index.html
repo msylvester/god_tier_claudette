@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asterix - Atari 2600 Clone</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: white;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 3em;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+      color: #FFD700;
+    }
+
+    #gameCanvas {
+      display: block;
+      border: 4px solid #FFD700;
+      border-radius: 10px;
+      background: #87CEEB;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .instructions {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 800px;
+    }
+
+    .instructions h2 {
+      margin-bottom: 10px;
+      color: #FFD700;
+    }
+
+    .instructions p {
+      margin: 5px 0;
+      line-height: 1.6;
+    }
+
+    .high-scores {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 800px;
+    }
+
+    .high-scores h2 {
+      margin-bottom: 10px;
+      color: #FFD700;
+      text-align: center;
+    }
+
+    .score-list {
+      list-style: none;
+    }
+
+    .score-list li {
+      padding: 8px;
+      margin: 5px 0;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .score-rank {
+      color: #FFD700;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .score-name {
+      flex-grow: 1;
+    }
+
+    .score-value {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    .loading {
+      text-align: center;
+      color: #FFD700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎮 ASTERIX 🎮</h1>
+
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <div class="controls">
+      <button id="startBtn">Start Game</button>
+      <button id="pauseBtn">Pause</button>
+      <button id="resetBtn">Reset</button>
+      <button id="refreshScoresBtn">Refresh High Scores</button>
+    </div>
+
+    <div class="instructions">
+      <h2>📖 Instructions</h2>
+      <p><strong>Controls:</strong></p>
+      <p>← → (Arrow Keys) or A/D - Move left/right</p>
+      <p>↑ (Arrow Up) or SPACE - Jump</p>
+      <p><strong>Objective:</strong> Avoid enemies and survive as long as possible!</p>
+      <p><strong>Scoring:</strong></p>
+      <p>• Roman: 100 points</p>
+      <p>• Centurion: 250 points</p>
+      <p>• Lion: 500 points</p>
+      <p>• Survive: 1 point per frame</p>
+    </div>
+
+    <div class="high-scores">
+      <h2>🏆 High Scores</h2>
+      <div id="scoresContainer">
+        <p class="loading">Loading high scores...</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/game.js"></script>
+</body>
+</html>
