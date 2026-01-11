@@ -173,7 +173,7 @@ export class Game {
 
     ctx.save();
     ctx.font = 'bold 24px Arial';
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = '#FFFF00';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     ctx.fillText(`Score: ${this.score}`, 20, 20);
