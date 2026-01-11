@@ -77,9 +77,11 @@ export class Environment {
       // Calculate Y position
       let y: number;
       if (inverted) {
-        y = baseY + i * layerHeight;
+        // Bottom dome: draw from (baseY - height) down to baseY
+        y = baseY - height + i * layerHeight;
       } else {
-        y = baseY + (this.domeLayerCount - 1 - i) * layerHeight;
+        // Top dome: draw from baseY down to (baseY + height)
+        y = baseY + i * layerHeight;
       }
 
       // Draw trapezoid layer
