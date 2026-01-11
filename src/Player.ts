@@ -1,5 +1,6 @@
 import type { ArenaBounds, LaneInfo } from './Environment';
 import { InputManager } from './InputManager';
+import asterixImage from './assets/asterix.png';
 
 export class Player {
   public x: number;
@@ -13,6 +14,20 @@ export class Player {
   // Track if keys were just pressed (for discrete lane movement)
   private upWasPressed = false;
   private downWasPressed = false;
+
+  // Sprite loading
+  private static sprite: HTMLImageElement | null = null;
+  private static spriteLoaded = false;
+
+  static {
+    if (typeof Image !== 'undefined') {
+      Player.sprite = new Image();
+      Player.sprite.onload = () => {
+        Player.spriteLoaded = true;
+      };
+      Player.sprite.src = asterixImage;
+    }
+  }
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -76,13 +91,15 @@ export class Player {
     const drawX = this.x - this.width / 2;
     const drawY = this.y - this.height / 2;
 
-    // Draw Asterix placeholder - yellow/orange color scheme
-    ctx.fillStyle = '#FFD700'; // Gold for body
-    ctx.fillRect(drawX, drawY, this.width, this.height);
-
-    // Add a simple border to make it visible
-    ctx.strokeStyle = '#FFA500'; // Orange border
-    ctx.lineWidth = 2;
-    ctx.strokeRect(drawX, drawY, this.width, this.height);
+    if (Player.spriteLoaded && Player.sprite) {
+      ctx.drawImage(Player.sprite, drawX, drawY, this.width, this.height);
+    } else {
+      // Fallback: Draw placeholder while image loads
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(drawX, drawY, this.width, this.height);
+      ctx.strokeStyle = '#FFA500';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(drawX, drawY, this.width, this.height);
+    }
   }
 }

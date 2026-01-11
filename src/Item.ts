@@ -1,4 +1,5 @@
 import type { LaneInfo } from './Environment';
+import collectableImage from './assets/blue_collectable.png';
 
 export class Item {
   public x: number;
@@ -8,6 +9,20 @@ export class Item {
   public readonly width = 24;
   public readonly height = 24;
   public readonly points = 50;
+
+  // Sprite loading
+  private static sprite: HTMLImageElement | null = null;
+  private static spriteLoaded = false;
+
+  static {
+    if (typeof Image !== 'undefined') {
+      Item.sprite = new Image();
+      Item.sprite.onload = () => {
+        Item.spriteLoaded = true;
+      };
+      Item.sprite.src = collectableImage;
+    }
+  }
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -25,14 +40,16 @@ export class Item {
     const drawX = this.x - this.width / 2;
     const drawY = this.y - this.height / 2;
 
-    // Draw orange rectangle
-    ctx.fillStyle = '#FFA500'; // Orange
-    ctx.fillRect(drawX, drawY, this.width, this.height);
-
-    // Add a darker orange border
-    ctx.strokeStyle = '#FF8C00'; // Dark orange border
-    ctx.lineWidth = 2;
-    ctx.strokeRect(drawX, drawY, this.width, this.height);
+    if (Item.spriteLoaded && Item.sprite) {
+      ctx.drawImage(Item.sprite, drawX, drawY, this.width, this.height);
+    } else {
+      // Fallback: Draw placeholder while image loads
+      ctx.fillStyle = '#FFA500';
+      ctx.fillRect(drawX, drawY, this.width, this.height);
+      ctx.strokeStyle = '#FF8C00';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(drawX, drawY, this.width, this.height);
+    }
   }
 
   // Check if this item collides with a player
