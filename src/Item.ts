@@ -1,4 +1,4 @@
-import type { ArenaBounds, LaneInfo } from './Environment';
+import type { LaneInfo } from './Environment';
 
 export class Item {
   public x: number;
@@ -12,6 +12,11 @@ export class Item {
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
+  }
+
+  update(speed: number): void {
+    if (this.collected) return;
+    this.x += speed;
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
@@ -58,17 +63,9 @@ export class Item {
     );
   }
 
-  // Static factory method to create an item at a random position within a lane
-  static spawnInLane(
-    laneIndex: number,
-    laneInfo: LaneInfo,
-    bounds: ArenaBounds
-  ): Item {
+  // Static factory method to create an item at a specific x position in a lane
+  static spawnInLane(laneIndex: number, laneInfo: LaneInfo, startX: number): Item {
     const laneY = laneInfo.lanePositions[laneIndex];
-    // Random x position within the arena bounds (with some padding)
-    const padding = 50;
-    const x =
-      bounds.left + padding + Math.random() * (bounds.right - bounds.left - padding * 2);
-    return new Item(x, laneY);
+    return new Item(startX, laneY);
   }
 }

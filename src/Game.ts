@@ -14,9 +14,7 @@ export class Game {
   // Score and items
   private score: number = 0;
   private items: Item[] = [];
-  private itemSpawnTimer: number = 0;
-  private readonly itemSpawnInterval: number = 120; // frames between spawns (~2 seconds at 60fps)
-  private readonly maxItems: number = 10;
+  private readonly itemSpeed: number = 2; // pixels per frame - all items move together
 
   constructor(canvasId: string) {
     this.canvas = new Canvas(canvasId);
@@ -35,35 +33,26 @@ export class Game {
     // Reset score and items
     this.score = 0;
     this.items = [];
-    this.itemSpawnTimer = 0;
 
-    // Spawn initial items
-    this.spawnInitialItems();
+    // Spawn initial column of items
+    this.spawnItemColumn();
   }
 
-  private spawnInitialItems(): void {
+  // Spawn a vertical column of items (one per lane) at the left side
+  private spawnItemColumn(): void {
     if (!this.environment) return;
 
     const bounds = this.environment.getBounds(this.canvas.width, this.canvas.height);
     const laneInfo = this.environment.getLaneInfo(this.canvas.width, this.canvas.height);
 
-    // Spawn 3 items initially across different lanes
-    for (let i = 0; i < 3; i++) {
-      const laneIndex = Math.floor(Math.random() * laneInfo.laneCount);
-      const item = Item.spawnInLane(laneIndex, laneInfo, bounds);
+    // Start items at the left edge of the arena
+    const startX = bounds.left;
+
+    // Create one item per lane, forming a vertical column
+    for (let laneIndex = 0; laneIndex < laneInfo.laneCount; laneIndex++) {
+      const item = Item.spawnInLane(laneIndex, laneInfo, startX);
       this.items.push(item);
     }
-  }
-
-  private spawnItem(): void {
-    if (!this.environment || this.items.length >= this.maxItems) return;
-
-    const bounds = this.environment.getBounds(this.canvas.width, this.canvas.height);
-    const laneInfo = this.environment.getLaneInfo(this.canvas.width, this.canvas.height);
-
-    const laneIndex = Math.floor(Math.random() * laneInfo.laneCount);
-    const item = Item.spawnInLane(laneIndex, laneInfo, bounds);
-    this.items.push(item);
   }
 
   start(): void {
@@ -87,18 +76,22 @@ export class Game {
       const laneInfo = this.environment.getLaneInfo(this.canvas.width, this.canvas.height);
       this.player.update(this.input, bounds, laneInfo);
 
+      // Move all items together from left to right
+      for (const item of this.items) {
+        item.update(this.itemSpeed);
+      }
+
       // Check collision with items
       this.checkItemCollisions();
 
-      // Spawn new items periodically
-      this.itemSpawnTimer++;
-      if (this.itemSpawnTimer >= this.itemSpawnInterval) {
-        this.itemSpawnTimer = 0;
-        this.spawnItem();
+      // Check if all items have gone off screen or been collected - respawn column
+      const allOffScreenOrCollected = this.items.every(
+        (item) => item.collected || item.x > bounds.right + item.width
+      );
+      if (allOffScreenOrCollected) {
+        this.items = [];
+        this.spawnItemColumn();
       }
-
-      // Remove collected items
-      this.items = this.items.filter((item) => !item.collected);
     }
   }
 
